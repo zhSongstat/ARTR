@@ -3,20 +3,21 @@ function [Lk1,Sk1,E,Z]=ARTR(X,U,V,S,Z,etamax,itmax,beta,lambda,mu,W,eps,alpha)
 L = H_tprod(U,V);N = sum(W(:));E = zeros(size(L));
 sizeX = size(X);alpha1 = alpha;alpha2 = alpha;
 flag = 0;eta = log(0.01);
+Z0 = L.*double(~W)+S.*double(~W)+E.*double(~W);
+Z = Z0+ X.*W;
 while flag == 0
     for k = 1:itmax
        Lk = L;Sk = S;
       
-       Z0 = L.*double(~W)+S.*double(~W)+E.*double(~W);
-       Z = Z0+ X.*W;
+%        Z0 = L.*double(~W)+S.*double(~W)+E.*double(~W);
+%        Z = Z0+ X.*W;
 
        D = Z-S-E;
        U = Update_U(U,V,D,beta,mu);
        V = Update_V(U,V,D,beta,mu);
        L = H_tprod(U,V);
 
-       Z0 = L.*double(~W)+S.*double(~W)+E.*double(~W);
-       Z = Z0+ X.*W;
+
 
        if lambda == 0
            S = zeros(sizeX);
@@ -38,7 +39,10 @@ while flag == 0
         else
             eta = etamax;
         end
-
+        
+       Z0 = L.*double(~W)+S.*double(~W)+E.*double(~W);
+       Z = Z0+ X.*W;
+       
         Lk1 = L;Sk1 = S;
         if max(Lk1(:)-Lk(:)) < eps && max(Sk1(:)-Sk(:)) < eps
             flag = 1;
