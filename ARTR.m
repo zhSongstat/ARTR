@@ -8,9 +8,6 @@ Z = Z0+ X.*W;
 while flag == 0
     for k = 1:itmax
        Lk = L;Sk = S;
-      
-%        Z0 = L.*double(~W)+S.*double(~W)+E.*double(~W);
-%        Z = Z0+ X.*W;
 
        D = Z-S-E;
        U = Update_U(U,V,D,beta,mu);
